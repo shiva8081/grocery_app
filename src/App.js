@@ -6,6 +6,7 @@ import Footer from './Footer';
 import { useState, useEffect } from 'react';
 import { AddItem } from './AddItem';
 import { SearchItem } from './SearchItem';
+import apiRequest  from './apiRequest';
 
 function App() {
 
@@ -55,12 +56,24 @@ const [loading, setloading] = useState(true);
 
   const [newitem, setnewitem] = useState('');
 
-  const additem = (item) => {
+  const additem = async(item) => {
     const id = items.length ? items[items.length - 1].id + 1 : 1;
     const mynewitem = { id, checked: false, item };
     const listitem = [...items, mynewitem];
     setitems(listitem);
+    
 
+
+
+    const postOptions={
+      method:"POST",
+      header:{
+        'content-Type':'application/json',
+      },
+      body:JSON.stringify(mynewitem)
+    }
+    const Result=await apiRequest(API_URL,postOptions);
+    if(Result) setfetcherror(Result);
   }
 
   const handlesubmit = (e) => {
