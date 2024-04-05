@@ -45,13 +45,32 @@ const [loading, setloading] = useState(true);
     
   },[])
 
-  const onCheckbox = (id) => {
+  const onCheckbox = async (id) => {
     const listitem = items.map((item) => item.id === id ? { ...item, checked: !item.checked } : item);
     setitems(listitem);
+
+    const myItem=listitem.filter((item)=>item.id==id);
+    const updateOption={
+      method:'PATCH',
+      header:{'Content-Type':'application/json'},
+      body:JSON.stringify({checked:myItem[0].checked})
+    };
+    const requrl=`${API_URL}/${id}`;
+    const result=await apiRequest(requrl,updateOption)
+    if(result) setfetcherror(result);
+    
   }
-  const deletebtn = (id) => {
+
+  const deletebtn = async(id) => {
     const listitem = items.filter((item) => item.id !== id);
     setitems(listitem);
+    const deleteoption={
+      method:'DELETE'
+    }
+    const requrl=`${API_URL}/${id}`;
+    const result=await apiRequest(requrl,deleteoption)
+    if(result) setfetcherror(result);
+
   }
 
   const [newitem, setnewitem] = useState('');
@@ -62,9 +81,6 @@ const [loading, setloading] = useState(true);
     const listitem = [...items, mynewitem];
     setitems(listitem);
     
-
-
-
     const postOptions={
       method:"POST",
       header:{
@@ -107,14 +123,5 @@ export default App;
 
 
 
-// uotfoufotyftyofity
-// hkgcyckyvkugvgjboufouygyou
-// bvkhjycruyjcgkyvhjlfbewf'g
-// gburubg
-// wrgib
-// iwrg
-// removeEventListenerwrg
-// bwrb
-// wrgibbuwr
-// oubwor
+
 
